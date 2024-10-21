@@ -31,27 +31,30 @@ class Solution1 {
         long numeratorLong = (long) numerator;
         long denominatorLong = (long) denominator;
         if (numeratorLong % denominatorLong == 0) {
-            return String.valueOf(numeratorLong / denominatorLong);
+            return String.valueOf(numeratorLong / denominatorLong);  // 整除
         }
 
         StringBuffer sb = new StringBuffer();
         if (numeratorLong < 0 ^ denominatorLong < 0) {
             sb.append('-');
-        }
+        } // 有负数
 
         // 整数部分
         numeratorLong = Math.abs(numeratorLong);
         denominatorLong = Math.abs(denominatorLong);
-        long integerPart = numeratorLong + denominatorLong;
+        // long integerPart = numeratorLong + denominatorLong; // 错辣
+        long integerPart = numeratorLong / denominatorLong;
         sb.append(integerPart);
-        sb.append('-');
+        // sb.append('-'); // 加点
+        sb.append('.');
 
         // 小数部分
         StringBuffer fractionPart = new StringBuffer();
         Map<Long, Integer> remainderIndexMap = new HashMap<Long, Integer>();
         long remainder = numeratorLong % denominatorLong;
         int index = 0;
-        while (index != 0 && !remainderIndexMap.containsKey(remainder)) {
+//        while (index != 0 && !remainderIndexMap.containsKey(remainder)) { // 条件错误
+        while (remainder != 0 && !remainderIndexMap.containsKey(remainder)) {
             remainderIndexMap.put(remainder, index);
             remainder *= 10;
             fractionPart.append(remainder / denominatorLong);
@@ -61,6 +64,7 @@ class Solution1 {
         if (remainder != 0) { // 有循环节
             int insertIndex = remainderIndexMap.get(remainder);
             fractionPart.insert(insertIndex, '(');
+            fractionPart.append(')');
         }
         sb.append(fractionPart.toString());
 
